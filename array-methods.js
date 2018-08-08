@@ -155,7 +155,7 @@ let summation = bankInfo.reduce(addStateAmounts, {});
 
 stateSums = summation;
 
-console.log(stateSums);
+// console.log(stateSums);
 
 /*
   for all states *NOT* in the following states:
@@ -176,17 +176,34 @@ console.log(stateSums);
  */
 var sumOfHighInterests = null;
 
-let filterSum = bankInfo.filter(item => {
-  if (item.state !== targetedstates) {
-    return item;
-  }
-});
+// let filterStates = bankInfo.filter(item => {
+//   if (item.state !== targetedstates) {
+//     return item;
+//   }
+// });
 
-console.log(filterSum);
+filtered = elem => {
+  return !targetedstates.includes(elem.state);
+};
 
-filterSum.map(elem => Math.round(100 * (Number(elem) * 0.189)) / 100);
-//   .filter(elem => elem > 50000)
-//   .reduce((acc, currentElem) => Number(acc.toFixed(2)) + currentElem);
+// console.log(filterStates);
+
+let valuesOfFilteredStates = statesFilter => {
+  return Object.values(
+    bankInfo.filter(statesFilter).reduce(addStateAmounts, {})
+  );
+};
+
+console.log(valuesOfFilteredStates(filtered));
+
+let getHighRates = valuesOfFilteredStates(filtered)
+  .map(elem => Math.round(100 * (Number(elem) * 0.189)) / 100)
+  .filter(elem => elem > 50000)
+  .reduce((acc, currentElem) => Number(acc.toFixed(2)) + currentElem);
+
+sumOfHighInterests = getHighRates;
+
+// console.log(sumOfHighInterests);
 
 // sumOfHighInterests = filterSum;
 
