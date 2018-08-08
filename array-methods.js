@@ -84,14 +84,13 @@ datasetWithRoundedDime = roundedDimes;
 // set sumOfBankBalances to be the sum of all value held at `amount` for each bank object
 var sumOfBankBalances = null;
 
-summarize = (previous, next) => {
-  return previous + next;
-};
+const summarize = bankInfo.reduce((previous, next) => {
+  return Math.round((previous + Number(next.amount)) * 100) / 100;
+}, 0);
 
-// let summs = bankInfo.amount.reduce(summarize);
-// sumOfBankBalances = summs;
+sumOfBankBalances = summarize;
 
-console.log(sumOfBankBalances);
+// console.log(sumOfBankBalances);
 
 /*
   from each of the following states:
@@ -105,6 +104,22 @@ console.log(sumOfBankBalances);
   and then sum it all up into one value saved to `sumOfInterests`
  */
 var sumOfInterests = null;
+
+let targetedstates = ["WI", "IL", "WY", "OH", "GA", "DE"];
+
+let selectStates = bankInfo
+  .filter(item => {
+    if (targetedstates.includes(item.state)) {
+      return Math.round(item.amount * 0.189 * 100) / 100;
+    }
+  })
+  .reduce((acc, add) => {
+    return Math.round((acc + Number(add.amount * 0.189)) * 100) / 100;
+  }, 0);
+
+sumOfInterests = selectStates;
+
+console.log(sumOfInterests);
 
 /*
   aggregate the sum of bankBalance amounts
