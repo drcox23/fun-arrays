@@ -114,12 +114,13 @@ let selectStates = bankInfo
     }
   })
   .reduce((acc, add) => {
+    // console.log(reduce);
     return Math.round((acc + Number(add.amount * 0.189)) * 100) / 100;
   }, 0);
 
 sumOfInterests = selectStates;
 
-console.log(sumOfInterests);
+// console.log(sumOfInterests);
 
 /*
   aggregate the sum of bankBalance amounts
@@ -138,6 +139,23 @@ console.log(sumOfInterests);
   )
  */
 var stateSums = null;
+
+addStateAmounts = (acc, elem) => {
+  if (!acc[elem.state]) {
+    acc[elem.state] = Math.round(100 * Number(elem.amount)) / 100;
+  } else {
+    acc[elem.state] += Math.round(100 * Number(elem.amount)) / 100;
+    acc[elem.state] = Math.round(acc[elem.state] * 100) / 100;
+  }
+
+  return acc;
+};
+
+let summation = bankInfo.reduce(addStateAmounts, {});
+
+stateSums = summation;
+
+console.log(stateSums);
 
 /*
   for all states *NOT* in the following states:
@@ -158,11 +176,28 @@ var stateSums = null;
  */
 var sumOfHighInterests = null;
 
+let filterSum = bankInfo.filter(item => {
+  if (item.state !== targetedstates) {
+    return item;
+  }
+});
+
+console.log(filterSum);
+
+filterSum.map(elem => Math.round(100 * (Number(elem) * 0.189)) / 100);
+//   .filter(elem => elem > 50000)
+//   .reduce((acc, currentElem) => Number(acc.toFixed(2)) + currentElem);
+
+// sumOfHighInterests = filterSum;
+
+// console.log(sumOfHighInterests);
+
 /*
   set `lowerSumStates` to be an array of two letter state
   abbreviations of each state where the sum of amounts
   in the state is less than 1,000,000
  */
+
 var lowerSumStates = null;
 
 /*
